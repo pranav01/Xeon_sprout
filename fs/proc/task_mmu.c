@@ -230,14 +230,11 @@ static void *m_start(struct seq_file *m, loff_t *ppos)
 	priv->tail_vma = get_gate_vma(mm);
 
 	if (pos < mm->map_count) {
-		for (vma = mm->mmap; pos; pos--) {
-			m->version = vma->vm_start;
+		for (vma = mm->mmap; pos; pos--)
 			vma = vma->vm_next;
-		}
 		return vma;
 	}
 
-	/* we do not bother to update m->version in this case */
 	if (pos == mm->map_count && priv->tail_vma)
 		return priv->tail_vma;
 
